@@ -194,24 +194,25 @@ static void InitVector()
 		emb_context[a * dim + b] = 0;
 }
 */
-#include <windows.h>
+#include <cstdlib>  // برای aligned_alloc
 
 static void InitVector()
 {
     long long a, b;
 
-    emb_vertex = (real*) VirtualAlloc(NULL, num_vertices * dim * sizeof(real), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    emb_vertex = (real*) aligned_alloc(128, num_vertices * dim * sizeof(real));
     if (emb_vertex == NULL) { malloc_exit = 1; Rprintf("Error: memory allocation failed\n"); return; }
     for (b = 0; b < dim; b++)
         for (a = 0; a < num_vertices; a++)
             emb_vertex[a * dim + b] = (unif_rand() - 0.5) / dim;
 
-    emb_context = (real*) VirtualAlloc(NULL, num_vertices * dim * sizeof(real), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    emb_context = (real*) aligned_alloc(128, num_vertices * dim * sizeof(real));
     if (emb_context == NULL) { malloc_exit = 1; Rprintf("Error: memory allocation failed\n"); return; }
     for (b = 0; b < dim; b++)
         for (a = 0; a < num_vertices; a++)
             emb_context[a * dim + b] = 0;
 }
+
 
 
 /* Sample negative vertex samples according to vertex degrees */
