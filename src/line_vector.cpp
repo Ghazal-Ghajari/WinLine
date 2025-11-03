@@ -21,7 +21,7 @@ Publication: Jian Tang, Meng Qu, Mingzhe Wang, Ming Zhang, Jun Yan, Qiaozhu Mei.
 #include <vector> 
 #include <string> 
 #include <R.h>
-
+#include <cstdlib>  // برای aligned_alloc
 #define MAX_STRING 100
 #define SIGMOID_BOUND 6
 #define NEG_SAMPLING_POWER 0.75
@@ -178,7 +178,7 @@ static long long SampleAnEdge(double rand_value1, double rand_value2)
 }
 
 /* Initialize the vertex embedding and the context embedding */
-/*
+
 static void InitVector()
 {
 	long long a, b;
@@ -193,26 +193,6 @@ static void InitVector()
 	for (b = 0; b < dim; b++) for (a = 0; a < num_vertices; a++)
 		emb_context[a * dim + b] = 0;
 }
-*/
-#include <cstdlib>  // برای aligned_alloc
-
-static void InitVector()
-{
-    long long a, b;
-
-    emb_vertex = (real*) aligned_alloc(128, num_vertices * dim * sizeof(real));
-    if (emb_vertex == NULL) { malloc_exit = 1; Rprintf("Error: memory allocation failed\n"); return; }
-    for (b = 0; b < dim; b++)
-        for (a = 0; a < num_vertices; a++)
-            emb_vertex[a * dim + b] = (unif_rand() - 0.5) / dim;
-
-    emb_context = (real*) aligned_alloc(128, num_vertices * dim * sizeof(real));
-    if (emb_context == NULL) { malloc_exit = 1; Rprintf("Error: memory allocation failed\n"); return; }
-    for (b = 0; b < dim; b++)
-        for (a = 0; a < num_vertices; a++)
-            emb_context[a * dim + b] = 0;
-}
-
 
 
 /* Sample negative vertex samples according to vertex degrees */
