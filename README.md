@@ -4,7 +4,7 @@ This project serves to wrap the C++ LINE algorithm for network embedding so that
 ## Installation
 Run this command within an R session to install the project: 
 ```R
-devtools::install_github("YosefLab/Rline")
+devtools::install_github("Ghazal-Ghajari/WinLine")
 ``` 
 You must have the R package devtools pre-installed. To install the R package devtools run this command in an R session: 
 ```R 
